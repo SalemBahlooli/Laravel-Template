@@ -60,6 +60,11 @@ Port already taken? Set `APP_PORT=8081` (or `MAILPIT_PORT`, `DB_FORWARD_PORT`, `
 The container migrates the database, seeds it, and runs the scheduler and the queue worker for you.
 For hot reload while editing views and CSS: `docker compose exec app npm run dev -- --host`.
 
+**Speed on Windows and macOS.** `vendor/` and `node_modules/` live in Docker volumes, not in the project folder,
+because reading them through the folder share made every page take seconds. So run `composer` and `npm`
+**inside** the container (`docker compose exec app composer require ...`). Want it faster still on Windows? Keep
+the project inside WSL (`\\wsl$\Ubuntu\home\you\my-app`) instead of `C:\`.
+
 Everyday commands:
 
 ```bash

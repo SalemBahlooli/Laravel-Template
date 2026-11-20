@@ -32,6 +32,11 @@ services:
       RUN_SEEDERS: "true"
     volumes:
       - ./:/var/www/html
+      # vendor/ and node_modules/ live in Docker volumes, not in the project folder:
+      # reading thousands of files through the Windows/macOS folder share makes every
+      # page take seconds. Run composer/npm inside the container (see README).
+      - vendor:/var/www/html/vendor
+      - node-modules:/var/www/html/node_modules
     depends_on:
       mysql:
         condition: service_healthy
@@ -60,3 +65,5 @@ services:
 
 volumes:
   mysql-data:
+  vendor:
+  node-modules:

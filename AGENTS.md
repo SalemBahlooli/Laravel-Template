@@ -16,7 +16,7 @@ docker compose exec -T app php artisan permissions:check
 docker compose exec -T app npm run build
 ```
 
-Without Docker, drop the `docker compose exec -T app` prefix.
+Without Docker, drop the `docker compose exec -T app` prefix. In Docker, `vendor/` and `node_modules/` are volumes: run composer and npm inside the container.
 
 ## Before you finish any change
 

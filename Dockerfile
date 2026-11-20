@@ -65,6 +65,7 @@ RUN npm run build
 # ---------------------------------------------------------------- prod
 FROM base AS prod
 ENV APP_ENV=production APP_DEBUG=false LOG_CHANNEL=stderr
+RUN echo 'opcache.validate_timestamps = 0' > /usr/local/etc/php/conf.d/zz-prod.ini
 COPY --chown=www-data:www-data . .
 COPY --from=vendor --chown=www-data:www-data /app/vendor ./vendor
 COPY --from=assets --chown=www-data:www-data /app/public/build ./public/build

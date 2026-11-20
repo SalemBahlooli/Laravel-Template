@@ -63,6 +63,8 @@ docker compose exec app npm run build
 الحاوية تنشئ الجداول وتعبّئ البيانات الأساسية وتشغّل المجدول وطابور المهام تلقائياً.
 للتحديث الفوري للصفحات أثناء التعديل: `docker compose exec app npm run dev -- --host`.
 
+**السرعة على Windows وmacOS:** المجلدان `vendor/` و`node_modules/` محفوظان في Docker volumes وليس في مجلد المشروع، لأن قراءتهما من مجلد Windows كانت تجعل كل صفحة تأخذ عدة ثوانٍ. لذلك شغّل `composer` و`npm` **داخل** الحاوية (مثلاً `docker compose exec app composer require ...`). ولسرعة أكبر على Windows ضع المشروع داخل WSL بدل `C:\`.
+
 أوامر يومية:
 
 </div>
