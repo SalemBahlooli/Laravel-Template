@@ -8,7 +8,7 @@
 <div class="relative" x-data="{ open: false }" @click.outside="open = false" @keydown.escape.window="open = false">
     <div @click="open = !open">{{ $trigger }}</div>
     <div x-cloak x-show="open" x-transition.origin.top
-         class="absolute z-50 mt-2 {{ $width }} {{ $align === 'start' ? 'start-0' : 'end-0' }} overflow-hidden rounded-xl border border-slate-200 bg-white shadow-lg"
+         class="menu-panel absolute z-50 mt-2.5 {{ $width }} {{ $align === 'start' ? 'start-0' : 'end-0' }}"
          @click="open = false">
         {{ $slot }}
     </div>

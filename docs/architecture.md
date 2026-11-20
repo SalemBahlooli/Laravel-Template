@@ -24,20 +24,20 @@ app/
     Activity             Activity::log(...) and the change diffs
     TwoFactor            TOTP, trusted browsers, reused-code protection
     Sessions             list and sign out a person's devices
-    Menu                 builds the sidebar from config/menu.php
+    Menu                 builds the side rail, top-bar shortcuts and "Create" menu from config/menu.php
     Backups              list, create, download backups
     UserAgent            "Chrome on Windows" from a user agent string
   helpers.php            setting(), format_date(), format_datetime(), format_bytes(), is_rtl(), display_timezone()
 config/
   permission_tree.php    every permission, grouped for the Groups & Permissions screen
   settings.php           every setting: page, type, default, validation
-  menu.php               the sidebar
+  menu.php               the side rail, top-bar shortcuts and "Create" menu
 database/
   migrations/            users, groups, settings, activity_logs, sign_ins, announcements, ...
   seeders/               DatabaseSeeder (safe to repeat), DemoSeeder (sample data)
   factories/             UserFactory (->superUser(), ->withPermissions([...]), ->withTwoFactor(), ->inactive())
 resources/views/
-  components/layouts/    app.blade.php (sidebar + top bar), guest.blade.php (sign-in pages)
+  components/layouts/    app.blade.php (top bar + icon rail + title card), guest.blade.php (sign-in pages)
   components/            input, select, textarea, toggle, card, stat, badge, modal, empty, delete-button, ...
 lang/                    ar.json (every English text → Arabic), ar/*.php and en/*.php (Laravel's messages)
 routes/

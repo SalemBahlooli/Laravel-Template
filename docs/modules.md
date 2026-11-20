@@ -35,7 +35,7 @@ And it edits:
 | File | Change |
 |---|---|
 | `config/permission_tree.php` | `projects.view` with children `projects.create`, `projects.edit`, `projects.delete`, inserted above `// @module-permissions` |
-| `config/menu.php` | a menu item shown to people with `projects.view`, inserted above `// @module-menu` |
+| `config/menu.php` | a menu item shown to people with `projects.view`, also an icon in the top bar and an entry in its blue "Create" menu, inserted above `// @module-menu` |
 
 Then open **Groups & Permissions**, edit a group, and allow the new permissions under **Modules**.
 The generated code is a starting point: change it freely.
@@ -63,7 +63,7 @@ The same steps, if the feature does not fit a list/form/details shape:
 4. **Views.** Start from `resources/views/users/index.blade.php` or a generated module. Use
    `<x-layouts.app :title="__('Invoices')">`, `<x-card>`, `<x-input>`, `<x-select>`, `<x-toggle>`,
    `<x-empty>`, `<x-delete-button>`, and `@can('invoices.approve') ... @endcan` around buttons.
-5. **Menu.** Add an item to `config/menu.php` with `'can' => 'invoices.view'`.
+5. **Menu.** Add an item to `config/menu.php` with `'can' => 'invoices.view'`. Add `'shortcut' => true` for a top-bar icon and `'create' => ['route' => 'invoices.create', 'can' => 'invoices.create', 'label' => 'Invoice']` for the "Create" menu.
 6. **Text.** Write English inside `__('...')` and run `php artisan lang:missing ar --write`.
 7. **Tests.** Copy a generated module test. `$this->signInWith(['invoices.view'])` signs in a person with
    exactly those permissions.

@@ -50,7 +50,7 @@ has to change a package's config.
 | Page | Contains |
 |---|---|
 | General | name, organisation, support email, default language, time zone, date/time format, rows per page |
-| Branding | logo, favicon, main colour, sidebar style, sign-in page text, footer |
+| Branding | logo, favicon, main colour, what the top bar shows (logo, name or both), sign-in page text, footer |
 | Security | two-factor mode, code sign-in, reset by code, password rules, lockout, session length, new-device and lockout alerts |
 | Accounts | self sign-up, allowed email domains, default group, whether people edit their own name and email |
 | Mail | sender, alert address, a test email |

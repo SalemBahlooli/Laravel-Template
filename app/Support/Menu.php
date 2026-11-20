@@ -31,6 +31,58 @@ class Menu
         return $out;
     }
 
+    /**
+     * Items marked 'shortcut' => true: shown as icons in the top bar.
+     *
+     * @return array<int, array>
+     */
+    public static function shortcuts(array $menu): array
+    {
+        return collect($menu)
+            ->flatMap(fn ($item) => [$item, ...($item['children'] ?? [])])
+            ->filter(fn ($item) => ! empty($item['shortcut']) && isset($item['url']))
+            ->values()
+            ->all();
+    }
+
+    /**
+     * Items with a 'create' entry: the top bar's "Create" menu.
+     *   'create' => ['route' => 'users.create', 'can' => 'users.create', 'label' => 'User']
+     *
+     * @return array<int, array{label: string, icon: string, url: string}>
+     */
+    public static function creatable(array $menu, ?User $user): array
+    {
+        return collect($menu)
+            ->flatMap(fn ($item) => [$item, ...($item['children'] ?? [])])
+            ->filter(fn ($item) => ! empty($item['create']['route']) && Route::has($item['create']['route']))
+            ->filter(fn ($item) => empty($item['create']['can']) || $user?->hasAccess($item['create']['can']))
+            ->map(fn ($item) => [
+                'label' => $item['create']['label'] ?? $item['label'],
+                'icon' => $item['icon'] ?? 'fa-plus',
+                'url' => route($item['create']['route']),
+            ])
+            ->values()
+            ->all();
+    }
+
+    /** The icon of the open page's menu item (for the page title). */
+    public static function activeIcon(array $menu): ?string
+    {
+        foreach ($menu as $item) {
+            foreach ($item['children'] ?? [] as $child) {
+                if (! empty($child['active'])) {
+                    return $child['icon'] ?? $item['icon'] ?? null;
+                }
+            }
+            if (! empty($item['active']) && empty($item['children'])) {
+                return $item['icon'] ?? null;
+            }
+        }
+
+        return null;
+    }
+
     private static function filter(array $items, ?User $user): array
     {
         $out = [];

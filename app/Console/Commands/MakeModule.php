@@ -304,7 +304,8 @@ class MakeModule extends Command
             return;
         }
 
-        $line = "['label' => '{$v['labelPlural']}', 'icon' => '{$v['icon']}', 'route' => '{$v['route']}.index', 'active' => '{$v['route']}.*', 'can' => '{$v['permission']}.view'],\n    {$marker}";
+        $line = "['label' => '{$v['labelPlural']}', 'icon' => '{$v['icon']}', 'route' => '{$v['route']}.index', 'active' => '{$v['route']}.*', 'can' => '{$v['permission']}.view', 'shortcut' => true,\n"
+            ."        'create' => ['route' => '{$v['route']}.create', 'can' => '{$v['permission']}.create', 'label' => '{$v['label']}']],\n    {$marker}";
         File::put($path, str_replace($marker, $line, $text));
         $this->line('  <fg=green>updated</> config/menu.php');
     }

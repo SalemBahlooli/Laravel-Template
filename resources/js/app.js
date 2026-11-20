@@ -30,12 +30,7 @@ async function postJson(url, body = {}) {
 
 /* ----------------------------------------------------------------- layout */
 Alpine.store('layout', {
-    sidebarOpen: false, // mobile drawer
-    collapsed: localStorage.getItem('sidebar-collapsed') === '1', // desktop
-    toggleCollapsed() {
-        this.collapsed = !this.collapsed;
-        localStorage.setItem('sidebar-collapsed', this.collapsed ? '1' : '0');
-    },
+    sidebarOpen: false, // the side menu on phones
 });
 
 /* -------------------------------------------- heartbeat (presence + counters) */
@@ -120,6 +115,40 @@ Alpine.data('chart', (config) => ({
         });
     },
 }));
+
+/* Live mm:ss countdown, e.g. the sign-in lockout: x-data="countdown(90)". */
+Alpine.data('countdown', (seconds) => ({
+    left: Math.max(0, seconds),
+    get clock() {
+        const m = Math.floor(this.left / 60);
+        const s = this.left % 60;
+        return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+    },
+    init() {
+        const timer = setInterval(() => {
+            this.left = Math.max(0, this.left - 1);
+            if (this.left === 0) clearInterval(timer);
+        }, 1000);
+    },
+}));
+
+/* Sign-in pages: the soft light behind the card eases toward the pointer. */
+const authBg = document.querySelector('[data-auth-bg]');
+if (authBg && window.matchMedia?.('(pointer: fine)').matches) {
+    let tx = 50, ty = 32, cx = 50, cy = 32, raf = null;
+    const step = () => {
+        cx += (tx - cx) * 0.09;
+        cy += (ty - cy) * 0.09;
+        authBg.style.setProperty('--mx', `${cx.toFixed(2)}%`);
+        authBg.style.setProperty('--my', `${cy.toFixed(2)}%`);
+        raf = Math.abs(tx - cx) > 0.1 || Math.abs(ty - cy) > 0.1 ? requestAnimationFrame(step) : null;
+    };
+    window.addEventListener('pointermove', (e) => {
+        tx = (e.clientX / window.innerWidth) * 100;
+        ty = (e.clientY / window.innerHeight) * 100;
+        raf ??= requestAnimationFrame(step);
+    }, { passive: true });
+}
 
 /* Forms with data-confirm="Are you sure?" ask before submitting. */
 document.addEventListener('submit', (e) => {

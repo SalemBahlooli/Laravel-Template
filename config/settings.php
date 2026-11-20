@@ -88,9 +88,10 @@ return [
                     'type' => 'color', 'label' => 'Main color', 'default' => '#2563eb',
                     'help' => 'Buttons, links and highlights.',
                 ],
-                'sidebar_style' => [
-                    'type' => 'select', 'label' => 'Sidebar', 'default' => 'dark',
-                    'options' => ['dark' => 'Dark', 'light' => 'Light', 'brand' => 'Main color'],
+                'header_brand' => [
+                    'type' => 'select', 'label' => 'Top bar shows', 'default' => 'both',
+                    'options' => ['both' => 'Logo and name', 'logo' => 'Logo only', 'name' => 'Name only'],
+                    'help' => 'Without a logo, the first letter of the name is shown.',
                 ],
                 'login_title' => [
                     'type' => 'text', 'label' => 'Sign-in page title', 'default' => 'Welcome back',

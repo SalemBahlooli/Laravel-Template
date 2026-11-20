@@ -74,7 +74,7 @@ class SettingsTest extends TestCase
         $this->signInWith(['settings.manage']);
 
         $this->put(route('settings.update', 'branding'), [
-            'logo' => UploadedFile::fake()->image('logo.png'), 'primary_color' => '#0f766e', 'sidebar_style' => 'light',
+            'logo' => UploadedFile::fake()->image('logo.png'), 'primary_color' => '#0f766e', 'header_brand' => 'logo',
             'login_title' => 'Hi', 'login_subtitle' => '', 'footer_text' => '',
         ])->assertSessionHasNoErrors();
 

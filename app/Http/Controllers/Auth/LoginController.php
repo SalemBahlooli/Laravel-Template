@@ -64,9 +64,11 @@ class LoginController extends Controller
         if (RateLimiter::tooManyAttempts($throttleKey, $maxAttempts)) {
             SignInLog::failed($login, 'locked_out');
 
-            return $this->back($request, __('Too many attempts. Try again in :time.', [
-                'time' => $this->waitText(RateLimiter::availableIn($throttleKey)),
-            ]), $byCode);
+            $seconds = RateLimiter::availableIn($throttleKey);
+
+            // The sign-in page shows a live countdown from lockout_seconds.
+            return $this->back($request, __('Too many attempts. Try again in :time.', ['time' => $this->waitText($seconds)]), $byCode)
+                ->with('lockout_seconds', $seconds);
         }
 
         return $byCode
