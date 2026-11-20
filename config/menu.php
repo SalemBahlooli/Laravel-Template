@@ -1,0 +1,44 @@
+<?php
+
+/*
+|--------------------------------------------------------------------------
+| Sidebar menu
+|--------------------------------------------------------------------------
+|
+| Each item:
+|   label       English text (translated through lang/<locale>.json)
+|   icon        Font Awesome icon name, e.g. 'fa-users'
+|   route       named route to open
+|   active      route-name pattern(s) that highlight the item (default: route + '.*')
+|   can         permission (from config/permission_tree.php) needed to see it — optional
+|   children    a sub-menu (same keys), the parent then only opens/closes it
+|   badge       key of a live counter returned by HeartbeatController (optional)
+|
+| An item whose `can` fails is hidden. A parent with no visible children is hidden.
+| `php artisan make:module` inserts a menu item above the marker line.
+*/
+
+return [
+
+    ['label' => 'Dashboard', 'icon' => 'fa-gauge-high', 'route' => 'dashboard', 'active' => 'dashboard'],
+
+    // @module-menu (make:module inserts above this line)
+
+    ['heading' => 'Administration'],
+
+    ['label' => 'Users', 'icon' => 'fa-users', 'route' => 'users.index', 'active' => 'users.*', 'can' => 'users.view'],
+    ['label' => 'Groups & Permissions', 'icon' => 'fa-user-shield', 'route' => 'groups.index', 'active' => 'groups.*', 'can' => 'groups.view'],
+
+    ['label' => 'Monitoring', 'icon' => 'fa-chart-line', 'children' => [
+        ['label' => 'Activity Log', 'icon' => 'fa-clock-rotate-left', 'route' => 'activity.index', 'active' => 'activity.*', 'can' => 'activity.view'],
+        ['label' => 'Sign-in Log', 'icon' => 'fa-right-to-bracket', 'route' => 'sign-ins.index', 'active' => 'sign-ins.*', 'can' => 'signins.view'],
+        ['label' => 'Login Activity', 'icon' => 'fa-signal', 'route' => 'presence.index', 'active' => 'presence.*', 'can' => 'presence.view'],
+    ]],
+
+    ['label' => 'Announcements', 'icon' => 'fa-bullhorn', 'route' => 'announcements.index', 'active' => 'announcements.*', 'can' => 'announcements.manage'],
+    ['label' => 'Settings', 'icon' => 'fa-sliders', 'route' => 'settings.index', 'active' => 'settings.*', 'can' => 'settings.manage'],
+
+    ['heading' => 'Help'],
+
+    ['label' => "What's new", 'icon' => 'fa-wand-magic-sparkles', 'route' => 'changelog.index', 'active' => 'changelog.*'],
+];

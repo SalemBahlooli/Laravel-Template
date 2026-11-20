@@ -1,0 +1,57 @@
+# Runs on every push and pull request: code style, translations, permission
+# names, the test suite, the front-end build and the production image.
+name: tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.5'
+          extensions: bcmath, exif, gd, intl, pdo_sqlite, zip
+          coverage: none
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install
+        run: |
+          composer install --no-interaction --prefer-dist --no-progress
+          npm ci --no-audit --no-fund
+          cp .env.example .env
+          php artisan key:generate
+
+      - name: Code style (Pint)
+        run: vendor/bin/pint --test
+
+      - name: Every Arabic translation is present
+        run: php artisan lang:missing ar
+
+      - name: Every permission used in the code exists in config/permission_tree.php
+        run: php artisan permissions:check
+
+      - name: Build assets
+        run: npm run build
+
+      - name: Tests
+        run: php artisan test --compact
+
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build the production image
+        run: docker build --target prod -t laravel-template:ci .
