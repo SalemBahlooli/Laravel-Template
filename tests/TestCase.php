@@ -10,6 +10,23 @@ use PragmaRX\Google2FA\Google2FA;
 
 abstract class TestCase extends BaseTestCase
 {
+    /**
+     * Tests wipe the database (RefreshDatabase). Stop at once if they are not on the
+     * in-memory SQLite database from phpunit.xml, so a real database is never touched.
+     */
+    public function createApplication()
+    {
+        $app = parent::createApplication();
+
+        $connection = $app['config']->get('database.default');
+        $database = $app['config']->get("database.connections.{$connection}.database");
+        if ($connection !== 'sqlite' || $database !== ':memory:') {
+            throw new \RuntimeException("Tests refuse to run on the [{$connection}] database \"{$database}\": they would erase it. Check DB_* in phpunit.xml.");
+        }
+
+        return $app;
+    }
+
     protected function setUp(): void
     {
         parent::setUp();
